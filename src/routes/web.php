@@ -21,19 +21,6 @@ Route::get('/', function () {
     return redirect('/attendance');
 });
 
-// 一般ユーザー認証
-
-// 会員登録画面
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-// 会員登録処理
-Route::post('/register', [AuthController::class, 'register']);
-// ログイン画面
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-// ログイン処理
-Route::post('/login', [AuthController::class, 'login']);
-// ログアウト処理
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 // ログイン後のみ一般ユーザー
 Route::middleware('auth')->group(function () {
     // 勤怠登録画面

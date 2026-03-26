@@ -48,6 +48,7 @@ class User extends Authenticatable
     ];
 
     // 「このユーザーは何回勤怠を記録したか」を簡単に取り出す
+    // このユーザーに紐づく勤怠データ一覧を取得
     public function attendances()
     {
         return $this->hasMany(Attendance::class);

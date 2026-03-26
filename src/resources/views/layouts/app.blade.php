@@ -16,8 +16,9 @@
         <div class="header__inner">
             <div class="header-utilities">
                 <a class="header__logo" href="/">
-                    Attendance Management
+                    <img src="{{ asset('images/coachtech-logo.png') }}" alt="coachtechロゴ">
                 </a>
+                
                 <nav>
                     <ul class="header-nav">
                         @if (Auth::check())
