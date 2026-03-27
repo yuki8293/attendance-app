@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Authという機能をこのファイルで使えるようにする
 
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class AuthController extends Controller
 {
     // トップページ（今は使ってない）
@@ -41,5 +45,23 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'ログイン情報が登録されていません'
         ]);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        //FormRequestでバリデーション済みのデータを取得
+        $validated = $request->validated();
+
+        // ユーザーをデータベースに登録
+        User::create([
+            // 名前を保存
+            'name' => $validated['name'],
+            // メールアドレスを保存
+            'email' => $validated['email'],
+            // パスワードはそのままでは危険なので、暗号化して保存
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect('/login');
     }
 }
