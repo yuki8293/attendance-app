@@ -13,6 +13,10 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -38,6 +42,17 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');
         });
 
+        Fortify::authenticateUsing(function (Request $request) {
+
+            if (Auth::attempt($request->only('email', 'password'))) {
+                return Auth::user();
+            }
+
+            throw ValidationException::withMessages([
+                'email' => 'ログイン情報が登録されていません',
+            ]);
+        });
+        
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
 
