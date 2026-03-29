@@ -18,15 +18,24 @@
                 <a class="header__logo" href="/">
                     <img src="{{ asset('images/coachtech-logo.png') }}" alt="coachtechロゴ">
                 </a>
-                
+
                 <nav>
                     <ul class="header-nav">
                         @if (Auth::check())
+
                         <li class="header-nav__item">
-                            <a class="header-nav__link" href="/mypage">マイページ</a>
+                            <a class="header-nav__link" href="{{ route('attendance.index') }}">勤怠</a>
+                        </li>
+
+                        <li class="header-nav__item">
+                            <a class="header-nav__link" href="{{ route('attendance.list') }}">退勤一覧</a>
+                        </li>
+
+                        <li class="header-nav__item">
+                            <a class="header-nav__link" href="{{ route('stamp_request.list') }}">申請</a>
                         </li>
                         <li class="header-nav__item">
-                            <form class="form" action="/logout" method="post">
+                            <form class="logout-form" action="{{ route('logout') }}" method="post">
                                 @csrf
                                 <button class="header-nav__button">ログアウト</button>
                             </form>
