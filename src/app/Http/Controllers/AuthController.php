@@ -53,7 +53,7 @@ class AuthController extends Controller
         $validated = $request->validated();
 
         // ユーザーをデータベースに登録
-        User::create([
+        $user = User::create([
             // 名前を保存
             'name' => $validated['name'],
             // メールアドレスを保存
@@ -62,6 +62,9 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect('/login');
+        // 登録後に自動ログイン
+        Auth::login($user);
+
+        return redirect('/attendance');
     }
 }
