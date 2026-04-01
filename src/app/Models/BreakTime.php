@@ -10,6 +10,9 @@ class BreakTime extends Model
 {
     use HasFactory;
 
+    // テーブル名が違うので指定
+    protected $table = 'breaks';
+
     // この項目はまとめてデータ登録してOK！
     protected $fillable = [
         'attendance_id',

@@ -17,6 +17,8 @@ class Attendance extends Model
         'work_date',
         'start_time',
         'end_time',
+        'break_start',
+        'break_end',
     ];
 
     // この勤怠はどのユーザーのものか（多対1）
