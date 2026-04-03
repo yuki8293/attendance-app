@@ -12,13 +12,21 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    // 保存OKなカラム
     protected $fillable = [
-        'user_id',
-        'work_date',
-        'start_time',
-        'end_time',
-        'break_start',
-        'break_end',
+        'user_id', // ユーザーID
+        'work_date', // 勤務日
+        'start_time', // 出勤時間
+        'end_time', // 退勤時間
+        'break_start', // 休憩開始
+        'break_end', // 休憩終了
+    ];
+
+    // データの型変換
+    protected $casts = [
+        'work_date' => 'date', // 日付として扱う
+        'start_time' => 'datetime', // 日時として扱う
+        'end_time' => 'datetime', // 日時として扱う
     ];
 
     // この勤怠はどのユーザーのものか（多対1）

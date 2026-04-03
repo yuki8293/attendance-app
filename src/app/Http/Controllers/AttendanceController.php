@@ -25,10 +25,16 @@ class AttendanceController extends Controller
         // 今日の勤怠データ取得
         $attendance = Attendance::where('user_id', Auth::id())
             ->whereDate('work_date', Carbon::today())
+            ->latest()
             ->first();
 
         // 出勤
         if ($request->action === 'start') {
+
+            if ($attendance) {
+                return redirect()->back()->with('error', '本日はすでに出勤しています');
+            }
+
             Attendance::create([
                 'user_id' => Auth::id(),
                 'work_date' => Carbon::today(),
@@ -60,11 +66,34 @@ class AttendanceController extends Controller
 
         // 退勤
         elseif ($request->action === 'end' && $attendance) {
+
+            $onBreak = BreakTime::where('attendance_id', $attendance->id)
+                ->whereNull('end_time')
+                ->exists();
+
+            if ($onBreak) {
+                return redirect()->back()->with('error', '休憩中は退勤できません');
+            }
+
             $attendance->update([
-                'end_time' => Carbon::now()->format('H:i:s'),
+                'end_time' => Carbon::now(),
             ]);
         }
 
         return redirect()->route('attendance.index');
+    }
+
+    public function list()
+    {
+        // ログインしているユーザーのIDを取得
+        $userId = Auth::id();
+
+        // 勤怠データを取得
+        $attendances = Attendance::where('user_id', $userId)
+            ->orderBy('work_date', 'desc')
+            ->get();
+
+        // 一覧画面にデータを渡す
+        return view('attendance.list', compact('attendances'));
     }
 }

@@ -46,6 +46,10 @@ $status = '出勤中';
     {{-- 時刻 --}}
     <p>{{ now()->format('H:i') }}</p>
 
+    @if($status === '退勤済')
+    <p class="message">お疲れさまでした。</p>
+    @endif
+
     {{-- 出勤前のみ出勤ボタン表示 --}}
     @if(!$attendance || !$attendance->start_time)
     <form method="POST" action="{{ route('attendance.store') }}">
