@@ -106,4 +106,35 @@ class AttendanceController extends Controller
         // 一覧画面にデータを渡す
         return view('attendance.list', compact('attendances', 'month'));
     }
+
+    public function detail($id)
+    {
+        // 「勤怠データ」と「関連する休憩データ」をまとめて取得する
+        $attendance = Attendance::with('breaks')->findOrFail($id);
+
+        // 取得した勤怠データを詳細画面に渡す
+        return view('attendance.detail', compact('attendance'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $attendance = Attendance::findOrFail($id);
+
+        // 出勤・退勤の更新
+        $attendance->update([
+            'start_time' => $request->clock_in,
+            'end_time'   => $request->clock_out,
+            'note'       => $request->note,
+        ]);
+
+        // 休憩（簡易版：1件目）
+        if (isset($attendance->breaks[0])) {
+            $attendance->breaks[0]->update([
+                'start_time' => $request->break1_start,
+                'end_time'   => $request->break1_end,
+            ]);
+        }
+
+        return redirect()->route('attendance.detail', $id);
+    }
 }

@@ -20,6 +20,11 @@ class BreakTime extends Model
         'end_time',
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     // このデータは1つの勤怠に属している(多対１)
     public function attendance()
     {

@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
     // 勤怠詳細画面
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
+    // 勤怠更新ルート
+    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])
+        ->name('attendance.update');
     // 申請一覧画面
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'list'])->name('stamp_request.list');
 });
