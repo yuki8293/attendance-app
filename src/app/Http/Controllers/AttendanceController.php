@@ -83,17 +83,27 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.index');
     }
 
-    public function list()
+    public function list(Request $request)
     {
         // ログインしているユーザーのIDを取得
         $userId = Auth::id();
 
-        // 勤怠データを取得
+        // クエリパラメータから月を取得（なければ今月）
+        $month = $request->input('month', now()->format('Y-m'));
+
+        // 月の開始・終了を作成
+        $startOfMonth = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
+        $endOfMonth = Carbon::createFromFormat('Y-m', $month)->endOfMonth();
+
+
+        // 自分のデータのみ
         $attendances = Attendance::where('user_id', $userId)
-            ->orderBy('work_date', 'desc')
-            ->get();
+            ->whereBetween('work_date', [$startOfMonth, $endOfMonth]) // この期間のデータだけ取得する
+
+            ->orderBy('work_date', 'desc') // 並び順OK
+            ->get(); // 複数取得OK
 
         // 一覧画面にデータを渡す
-        return view('attendance.list', compact('attendances'));
+        return view('attendance.list', compact('attendances', 'month'));
     }
 }
