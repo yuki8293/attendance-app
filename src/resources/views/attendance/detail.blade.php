@@ -16,6 +16,13 @@
             @csrf
             @method('PUT')
 
+            {{-- エラー表示 --}}
+            @if ($errors->any())
+            <div>
+                {{ $errors->first() }}
+            </div>
+            @endif
+
             {{-- 名前（表示のみ） --}}
             <div class="row">
                 <div class="label">名前</div>
@@ -51,47 +58,50 @@
             {{-- 休憩1（入力） --}}
             @foreach($attendance->breaks as $index => $break)
             <div class="row">
-                <div class="label">休憩{{ $index + 1 }}</div>
-                <div class="value">
+                @foreach($attendance->breaks->take(2) as $index => $break)
+                <div class="row">
+                    <div class="label">休憩{{ $loop->iteration }}</div>
+                    <div class="value">
 
-                    <input
-                        type="time"
-                        name="breaks[{{ $index }}][start]"
-                        value="{{ optional($break->start_time)->format('H:i') }}">
+                        <input
+                            type="time"
+                            name="breaks[{{ $index }}][start]"
+                            value="{{ optional($break->start_time)->format('H:i') }}">
 
-                    〜
+                        〜
 
-                    <input
-                        type="time"
-                        name="breaks[{{ $index }}][end]"
-                        value="{{ optional($break->end_time)->format('H:i') }}">
+                        <input
+                            type="time"
+                            name="breaks[{{ $index }}][end]"
+                            value="{{ optional($break->end_time)->format('H:i') }}">
 
+                    </div>
                 </div>
-            </div>
-            @endforeach
+                @endforeach
+                @endforeach
 
-            {{-- 休憩2（入力） --}}
-            <div class="row">
-                <div class="label">休憩2</div>
-                <div class="value">
-                    <input type="time" name="break_new_start">
-                    〜
-                    <input type="time" name="break_new_end">
+                {{-- 休憩2（入力） --}}
+                <div class="row">
+                    <div class="label">休憩2</div>
+                    <div class="value">
+                        <input type="time" name="break_new_start">
+                        〜
+                        <input type="time" name="break_new_end">
+                    </div>
                 </div>
-            </div>
 
-            {{-- 備考（入力） --}}
-            <div class="row">
-                <div class="label">備考</div>
-                <div class="value">
-                    <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
+                {{-- 備考（入力） --}}
+                <div class="row">
+                    <div class="label">備考</div>
+                    <div class="value">
+                        <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
+                    </div>
                 </div>
-            </div>
 
-            {{-- 修正ボタン --}}
-            <div class="row">
-                <button type="submit">修正</button>
-            </div>
+                {{-- 修正ボタン --}}
+                <div class="row">
+                    <button type="submit">修正</button>
+                </div>
 
         </form>
 

@@ -18,8 +18,7 @@ class Attendance extends Model
         'work_date', // 勤務日
         'start_time', // 出勤時間
         'end_time', // 退勤時間
-        'break_start', // 休憩開始
-        'break_end', // 休憩終了
+        'note',
     ];
 
     // データの型変換

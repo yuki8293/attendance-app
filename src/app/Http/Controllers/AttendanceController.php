@@ -118,23 +118,71 @@ class AttendanceController extends Controller
 
     public function update(Request $request, $id)
     {
-        $attendance = Attendance::findOrFail($id);
+        // 勤怠データ取得（休憩も一緒に）
+        $attendance = Attendance::with('breaks')->findOrFail($id);
 
-        // 出勤・退勤の更新
+        // 出勤・退勤・備考を更新
         $attendance->update([
-            'start_time' => $request->clock_in,
-            'end_time'   => $request->clock_out,
+
+            'start_time' => $request->clock_in
+                ? Carbon::parse($attendance->work_date)->format('Y-m-d') . ' ' . $request->clock_in
+                : null,
+
+            'end_time' => $request->clock_out
+                ? Carbon::parse($attendance->work_date)->format('Y-m-d') . ' ' . $request->clock_out
+                : null,
+
             'note'       => $request->note,
         ]);
 
-        // 休憩（簡易版：1件目）
-        if (isset($attendance->breaks[0])) {
-            $attendance->breaks[0]->update([
-                'start_time' => $request->break1_start,
-                'end_time'   => $request->break1_end,
+        // 休憩データが送信されている場合
+        if ($request->has('breaks')) {
+
+            // 既存の休憩データをループで処理
+            foreach ($request->breaks as $index => $breakData) {
+
+                // 既存データがある場合のみ更新
+                if (isset($attendance->breaks[$index])) {
+                    $attendance->breaks[$index]->update([
+
+                        // 休憩開始時間を更新
+                        'start_time' => $breakData['start'],
+
+                        // 休憩終了時間を更新
+                        'end_time'   => $breakData['end'],
+                    ]);
+                }
+            }
+        }
+
+        // 新しく追加された休憩が入力されている場合のみ登録
+        if ($request->break_new_start && $request->break_new_end) {
+            BreakTime::create([
+
+                // どの勤怠に紐づく休憩か
+                'attendance_id' => $attendance->id,
+
+                // 新しい休憩の開始時間
+                'start_time'    => $request->break_new_start,
+
+                // 新しい休憩の終了時間
+                'end_time'      => $request->break_new_end,
             ]);
         }
 
-        return redirect()->route('attendance.detail', $id);
+        // 更新後、詳細画面にリダイレクト
+        return redirect()->route('attendance.pending', $id);
+    }
+
+    // 承認待ち画面を表示するメソッド
+    public function pending($id)
+    {
+        // 指定されたIDの勤怠データを取得
+        // 休憩（breaks）とユーザー情報（user）も一緒に取得する
+        $attendance = Attendance::with('breaks', 'user')->findOrFail($id);
+
+        // 承認待ち画面（pending.blade.php）を表示
+        // $attendance のデータをビューに渡す
+        return view('attendance.pending', compact('attendance'));
     }
 }

@@ -34,6 +34,10 @@ Route::middleware('auth')->group(function () {
     // 勤怠更新ルート
     Route::put('/attendance/{id}', [AttendanceController::class, 'update'])
         ->name('attendance.update');
+    // 承認待ち画面へのルート
+    Route::get('/attendance/{id}/pending', [AttendanceController::class, 'pending'])
+        ->name('attendance.pending');
+        
     // 申請一覧画面
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'list'])->name('stamp_request.list');
 });
