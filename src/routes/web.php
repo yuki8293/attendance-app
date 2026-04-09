@@ -37,9 +37,13 @@ Route::middleware('auth')->group(function () {
     // 承認待ち画面へのルート
     Route::get('/attendance/{id}/pending', [AttendanceController::class, 'pending'])
         ->name('attendance.pending');
-        
+
     // 申請一覧画面
-    Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'list'])->name('stamp_request.list');
+    Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
+
+    // 申請保存
+    Route::post('/stamp_correction_request/store', [StampCorrectionRequestController::class, 'store'])
+        ->name('stamp_correction_request.store');
 });
 
 // 管理者ログイン

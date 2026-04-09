@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\AttendanceRequest;
+
+class StampCorrectionRequestController extends Controller
+{
+    public function index()
+    {
+        // 承認待ちの申請データを取得
+        $pendingRequests = AttendanceRequest::with(['user', 'attendance'])
+            // userテーブル（名前）とattendanceテーブル（日付）も一緒に取得（リレーション）
+            ->where('user_id', auth()->id())
+            // ログインしているユーザーの申請だけ取得
+            ->where('status', '承認待ち')
+            // ステータスが「承認待ち」のものだけ取得
+            ->get();
+        // データを全部取得（コレクションとして取得）
+
+        // 承認済みの申請データを取得
+        $approvedRequests = AttendanceRequest::with(['user', 'attendance'])
+            // userとattendanceの情報も一緒に取得
+            ->where('user_id', auth()->id())
+            // ログインユーザーのデータだけ
+            ->where('status', '承認済み')
+            // ステータスが「承認済み」のもの
+            ->get();
+        // データ取得
+
+        return view('stamp_correction_request.list', compact('pendingRequests', 'approvedRequests'));
+    }
+
+    // 申請を保存する処理
+    public function store(Request $request)
+    {
+        // AttendanceRequestテーブルにデータを新規登録
+        AttendanceRequest::create([
+            'user_id' => auth()->id(),
+            // ログインしているユーザーのIDを保存
+
+            'attendance_id' => $request->attendance_id,
+            // 対象となる勤怠データのID
+
+            'start_time' => $request->start_time,
+            // 修正後の出勤時間
+
+            'end_time' => $request->end_time,
+            // 修正後の退勤時間
+
+            'note' => $request->note,
+            // 修正理由
+
+            'status' => '承認待ち',
+            // ステータス（これがないと一覧に表示されない⚠️）
+        ]);
+
+        // 保存後、申請一覧画面にリダイレクト
+        return redirect()->route('stamp_correction_request.list');
+    }
+}

@@ -32,7 +32,7 @@
                         </li>
 
                         <li class="header-nav__item">
-                            <a class="header-nav__link" href="{{ route('stamp_request.list') }}">申請</a>
+                            <a class="header-nav__link" href="{{ route('stamp_correction_request.list') }}">申請</a>
                         </li>
                         <li class="header-nav__item">
                             <form class="logout-form" action="{{ route('logout') }}" method="post">

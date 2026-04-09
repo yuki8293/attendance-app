@@ -12,97 +12,76 @@
     <div class="detail-container">
 
         {{-- ▼ 更新フォーム --}}
-        <form action="{{ route('attendance.update', $attendance->id) }}" method="POST">
+        <form action="{{ route('stamp_correction_request.store') }}" method="POST">
             @csrf
-            @method('PUT')
 
-            {{-- エラー表示 --}}
-            @if ($errors->any())
+            {{-- 勤怠ID（超重要） --}}
+            <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
+
+            {{-- 名前（表示だけ） --}}
             <div>
-                {{ $errors->first() }}
-            </div>
-            @endif
-
-            {{-- 名前（表示のみ） --}}
-            <div class="row">
-                <div class="label">名前</div>
-                <div class="value">
-                    {{ $attendance->user->name }}
-                </div>
+                名前：{{ $attendance->user->name }}
             </div>
 
-            {{-- 日付（表示のみ） --}}
-            <div class="row">
-                <div class="label">日付</div>
-                <div class="value">
-                    {{ \Carbon\Carbon::parse($attendance->work_date)->format('Y/m/d') }}
-                </div>
+            {{-- 日付（表示だけ） --}}
+            <div>
+                日付：{{ \Carbon\Carbon::parse($attendance->work_date)->format('Y/m/d') }}
             </div>
 
-            {{-- 出勤・退勤（入力） --}}
+            {{-- 出勤・退勤 --}}
+            <div>
+                出勤・退勤：
+                <input
+                    type="time"
+                    name="start_time"
+                    value="{{ optional($attendance->start_time)->format('H:i') }}">
+                〜
+                <input
+                    type="time"
+                    name="end_time"
+                    value="{{ optional($attendance->end_time)->format('H:i') }}">
+            </div>
+
+            {{-- 休憩（入力） --}}
+            @foreach($attendance->breaks->take(2) as $index => $break)
             <div class="row">
-                <div class="label">出勤・退勤</div>
+                <div class="label">休憩{{ $loop->iteration }}</div>
                 <div class="value">
+
                     <input
                         type="time"
-                        name="clock_in"
-                        value="{{ optional($attendance->start_time)->format('H:i') }}">
+                        name="breaks[{{ $index }}][start]"
+                        value="{{ optional($break->start_time)->format('H:i') }}">
+
                     〜
+
                     <input
                         type="time"
-                        name="clock_out"
-                        value="{{ optional($attendance->end_time)->format('H:i') }}">
+                        name="breaks[{{ $index }}][end]"
+                        value="{{ optional($break->end_time)->format('H:i') }}">
+
+                </div>
+            </div>
+            @endforeach
+
+            {{-- 休憩（追加） --}}
+            <div class="row">
+                <div class="label">休憩追加</div>
+                <div class="value">
+                    <input type="time" name="break_new_start">
+                    〜
+                    <input type="time" name="break_new_end">
                 </div>
             </div>
 
-            {{-- 休憩1（入力） --}}
-            @foreach($attendance->breaks as $index => $break)
-            <div class="row">
-                @foreach($attendance->breaks->take(2) as $index => $break)
-                <div class="row">
-                    <div class="label">休憩{{ $loop->iteration }}</div>
-                    <div class="value">
+            {{-- 備考 --}}
+            <div>
+                備考：
+                <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
+            </div>
 
-                        <input
-                            type="time"
-                            name="breaks[{{ $index }}][start]"
-                            value="{{ optional($break->start_time)->format('H:i') }}">
-
-                        〜
-
-                        <input
-                            type="time"
-                            name="breaks[{{ $index }}][end]"
-                            value="{{ optional($break->end_time)->format('H:i') }}">
-
-                    </div>
-                </div>
-                @endforeach
-                @endforeach
-
-                {{-- 休憩2（入力） --}}
-                <div class="row">
-                    <div class="label">休憩2</div>
-                    <div class="value">
-                        <input type="time" name="break_new_start">
-                        〜
-                        <input type="time" name="break_new_end">
-                    </div>
-                </div>
-
-                {{-- 備考（入力） --}}
-                <div class="row">
-                    <div class="label">備考</div>
-                    <div class="value">
-                        <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
-                    </div>
-                </div>
-
-                {{-- 修正ボタン --}}
-                <div class="row">
-                    <button type="submit">修正</button>
-                </div>
-
+            {{-- 修正ボタン --}}
+            <button type="submit">修正</button>
         </form>
 
     </div>
