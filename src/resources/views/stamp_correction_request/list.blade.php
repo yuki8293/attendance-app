@@ -38,7 +38,7 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="#">詳細</a></td>
+                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
@@ -74,11 +74,11 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="#">詳細</a></td>
+                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
-                <td colspan="6">承認済みの申請はありません</td>
+                <td colspan=" 6">承認済みの申請はありません</td>
             </tr>
             @endforelse
         </table>
