@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StampCorrectionRequestController;
+use App\Http\Controllers\Admin\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +50,9 @@ Route::middleware('auth')->group(function () {
 // 管理者ログイン
 Route::prefix('admin')->group(function () {
     // 管理者ログイン画面
-    Route::get('/login', [AuthController::class, 'showAdminLoginForm'])->name('admin.login');
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
     // 管理者ログイン処理
-    Route::post('/login', [AuthController::class, 'adminLogin']);
+    Route::post('/login', [LoginController::class, 'login']);
 });
 
 // 管理者ログイン後のみ
