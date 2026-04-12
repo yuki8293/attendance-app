@@ -185,4 +185,14 @@ class AttendanceController extends Controller
         // $attendance のデータをビューに渡す
         return view('attendance.pending', compact('attendance'));
     }
+
+    // 管理者：勤怠一覧
+    public function adminList()
+    {
+        // 全ユーザーの勤怠を取得（ユーザー情報も一緒に）
+        $attendances = Attendance::with('user')->get();
+
+        // 管理者用の一覧画面に渡す
+        return view('admin.attendance.list', compact('attendances'));
+    }
 }

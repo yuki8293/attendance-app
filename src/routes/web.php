@@ -57,14 +57,27 @@ Route::prefix('admin')->group(function () {
 
 // 管理者ログイン後のみ
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
+
+    // 管理者用ログアウト
+    Route::post('/logout', [LoginController::class, 'logout'])
+        ->name('admin.logout');
+
     // 管理者勤怠一覧
     Route::get('/attendance/list', [AttendanceController::class, 'adminList'])->name('admin.attendance.list');
+
     // 管理者勤怠詳細
     Route::get('/attendance/{id}', [AttendanceController::class, 'adminDetail'])->name('admin.attendance.detail');
+
     // スタッフ一覧
     Route::get('/staff/list', [StaffController::class, 'list'])->name('admin.staff.list');
+
     // スタッフ別勤怠一覧（
     Route::get('/attendance/staff/{id}', [AttendanceController::class, 'staffAttendance'])->name('admin.staff.attendance');
+
+    // 修正申請一覧
+    Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'list'])
+        ->name('admin.stamp_request.list');
+
     // 修正申請承認画面
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [StampCorrectionRequestController::class, 'approve'])->name('admin.stamp_request.approve');
 });

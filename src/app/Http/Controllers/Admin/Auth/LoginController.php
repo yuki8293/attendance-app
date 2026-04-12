@@ -24,13 +24,20 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ])) {
-             // ログイン成功時、管理者画面へリダイレクト
-            return redirect()->route('admin.dashboard');
+             // ログイン成功時、管理者退勤一覧画面へリダイレクト
+            return redirect()->route('admin.attendance.list');
         }
 
         // ログイン失敗時、エラーメッセージを表示してログイン画面に戻る
         return back()->withErrors([
             'email' => 'ログインできません',
         ]);
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+
+        return redirect()->route('admin.login');
     }
 }
