@@ -187,12 +187,18 @@ class AttendanceController extends Controller
     }
 
     // 管理者：勤怠一覧
-    public function adminList()
+    public function adminList(Request $request)
     {
-        // 全ユーザーの勤怠を取得（ユーザー情報も一緒に）
-        $attendances = Attendance::with('user')->get();
+        // 日付取得（なければ今日）
+        $date = $request->input('date')
+            ? Carbon::parse($request->input('date'))
+            : Carbon::today();
 
-        // 管理者用の一覧画面に渡す
-        return view('admin.attendance.list', compact('attendances'));
+        // その日の勤怠だけ取得
+        $attendances = Attendance::with('user')
+            ->whereDate('work_date', $date)
+            ->get();
+
+        return view('admin.attendance.list', compact('attendances', 'date'));
     }
 }
