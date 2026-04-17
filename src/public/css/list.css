@@ -1,3 +1,5 @@
+/* 勤怠一覧画面css */
+
 /* 全体 */
 .attendance-list {
     max-width: 900px;
@@ -63,4 +65,10 @@
 .attendance-list__table a {
     color: black;
     text-decoration: underline;
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .attendance-list {
+        max-width: 1100px;
+    }
 }
