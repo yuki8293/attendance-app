@@ -11,6 +11,10 @@ body {
     align-items: center;
     height: 80vh;
     text-align: center;
+
+    width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
 }
 
 /* ステータス（勤務中など） */
