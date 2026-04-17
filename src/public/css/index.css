@@ -1,69 +1,69 @@
-.attendance__alert--success {
-    padding: 10px 30px;
-    border-color: #badbcc;
-    background-color: #d1e7dd;
-    color: #0f5132;
+/* ページ全体 */
+body {
+    background-color: #f5f5f5;
 }
 
-.attendance__alert--danger {
-    padding: 10px 0;
-    border-color: #f5c2c7;
-    background-color: #f8d7da;
-    color: #842029;
-}
-
-.attendance__alert--danger ul {
-    margin: 0;
-}
-
-.attendance__panel {
-    margin: 0 auto;
-    width: 70%;
-}
-
-.attendance__button {
-    width: 100%;
+/* 全体中央寄せ */
+.attendance-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
     text-align: center;
 }
 
-.attendance__button-submit {
-    padding: 5px;
-    width: 30%;
-    height: 50px;
+/* ステータス（勤務中など） */
+.attendance-main h2 {
+    background-color: #eee;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* 日付 */
+.attendance-main p:first-of-type {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* 時刻 */
+.attendance-main p:nth-of-type(2) {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* ボタン共通 */
+.attendance-button {
+    background-color: black;
+    color: white;
+    padding: 12px 40px;
     border: none;
-    border-radius: 3px;
-    background: #000;
-    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-}
-
-.attendance__content {
-    margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
-}
-
-.attendance-table {
-    margin: 30px auto;
-    width: 70%;
-    text-align: center;
-}
-
-.attendance-table__inner {
-    width: 100%;
-}
-
-.attendance-table__row {
-    border-bottom: 1px solid #ddd;
-}
-
-.attendance-table__header {
-    padding: 12px;
-    width: 20%;
+    margin: 10px;
     font-weight: bold;
 }
 
-.attendance-table__item {
-    padding: 12px;
-    width: 20%;
+/* 退勤・休憩入りボタン */
+.attendance-actions {
+    display: flex;
+    gap: 20px;
+    flex-direction: row-reverse;
+}
+
+/* 休憩入ボタン（白ver） */
+.attendance-button--sub {
+    background-color: white;
+    color: black;
+    border: none;
+}
+
+/* メッセージ */
+.message {
+    margin-top: 20px;
+    color: #666;
 }

@@ -1,11 +1,18 @@
 @extends('layouts.admin')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/index.css') }}">
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
+@endsection
+
 @section('content')
 
 <div class="admin-attendance-list">
 
     {{-- タイトル --}}
-    <h1 class="admin-attendance-list__title">勤怠一覧</h1>
+    <h1 class="admin-attendance-list__title">
+        {{ $date->format('Y年m月d日') }}の勤怠
+    </h1>
 
     <div class="admin-attendance-list__nav">
 
@@ -35,7 +42,7 @@
         </a>
 
     </div>
-    
+
     {{-- テーブル --}}
     <table class="admin-attendance-list__table">
 

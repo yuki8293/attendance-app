@@ -189,10 +189,14 @@ class AttendanceController extends Controller
     // 管理者：勤怠一覧
     public function adminList(Request $request)
     {
-        // 日付取得（なければ今日）
+
+        // URLに日付があればそれを使う、なければ今日を使う
         $date = $request->input('date')
             ? Carbon::parse($request->input('date'))
-            : Carbon::today();
+            : now();
+
+        // 時間を0時にそろえて「その日単位」で扱えるようにする
+        $date = $date->startOfDay();
 
         // その日の勤怠だけ取得
         $attendances = Attendance::with('user')

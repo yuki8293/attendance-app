@@ -61,25 +61,28 @@ $status = '出勤中';
 
     @elseif($status === '出勤中')
 
-    <form method="POST" action="{{ route('attendance.store') }}">
-        @csrf
-        <button type="submit" name="action" value="break_start" class="attendance-button">
-            休憩入
-        </button>
-    </form>
+    <div class="attendance-actions">
 
-    <form method="POST" action="{{ route('attendance.store') }}">
-        @csrf
-        <button type="submit" name="action" value="end" class="attendance-button">
-            退勤
-        </button>
-    </form>
+        <form method="POST" action="{{ route('attendance.store') }}">
+            @csrf
+            <button type="submit" name="action" value="break_start" class="attendance-button attendance-button--sub">
+                休憩入
+            </button>
+        </form>
+
+        <form method="POST" action="{{ route('attendance.store') }}">
+            @csrf
+            <button type="submit" name="action" value="end" class="attendance-button">
+                退勤
+            </button>
+        </form>
+    </div>
 
     @elseif($status === '休憩中')
 
     <form method="POST" action="{{ route('attendance.store') }}">
         @csrf
-        <button type="submit" name="action" value="break_end" class="attendance-button">
+        <button type="submit" name="action" value="break_end" class="attendance-button attendance-button--sub">
             休憩戻
         </button>
     </form>
