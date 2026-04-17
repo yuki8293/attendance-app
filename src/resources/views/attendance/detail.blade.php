@@ -1,3 +1,5 @@
+<!-- 勤怠詳細画面　-->
+
 @extends('layouts.app')
 
 @section('css')
