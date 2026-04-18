@@ -205,4 +205,17 @@ class AttendanceController extends Controller
 
         return view('admin.attendance.list', compact('attendances', 'date'));
     }
+
+    // 管理者：勤怠詳細画面を表示する
+    public function adminDetail($id)
+    {
+        // 指定されたIDの勤怠データを取得する
+        // with('user', 'breaks') で「ユーザー情報」と「休憩データ」も一緒に取得
+        // → 画面で名前や休憩時間を表示するため
+        $attendance = Attendance::with('user', 'breaks')->findOrFail($id);
+
+        // 管理者用の詳細画面にデータを渡して表示する
+        // compact('attendance') で $attendance をそのままビューに渡す
+        return view('admin.attendance.detail', compact('attendance'));
+    }
 }
