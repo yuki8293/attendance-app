@@ -1,6 +1,6 @@
-<!-- 一般ユーザー用申請画面 -->
+{{-- 管理者用の申請一覧画面 --}}
 
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 
@@ -35,7 +35,7 @@
                 <td>{{ $request->status }}</td>
                 <td>{{ $request->user->name ?? '' }}</td>
                 <td>
-                    {{ $request->attendance->date ?? '' }}
+                    {{ $request->attendance->work_date ?? '' }}
                     {{ $request->start_time }}〜{{ $request->end_time }}
                 </td>
                 <td>{{ $request->note }}</td>

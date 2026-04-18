@@ -1,3 +1,5 @@
+{{-- 管理者用の勤怠一覧画面 --}}
+
 @extends('layouts.admin')
 
 @section('css')

@@ -7,6 +7,7 @@ use App\Models\AttendanceRequest;
 
 class StampCorrectionRequestController extends Controller
 {
+    // 一般ユーザー用の申請表示
     public function index()
     {
         // 承認待ちの申請データを取得
@@ -58,5 +59,22 @@ class StampCorrectionRequestController extends Controller
 
         // 保存後、申請一覧画面にリダイレクト
         return redirect()->route('stamp_correction_request.list');
+    }
+
+    // 管理者：申請一覧ページ表示
+    public function list()
+    {
+        // 承認待ちの申請
+        $pendingRequests = \App\Models\AttendanceRequest::with(['user', 'attendance'])
+            ->where('status', '承認待ち')
+            ->get();
+
+        // 承認済みの申請
+        $approvedRequests = \App\Models\AttendanceRequest::with(['user', 'attendance'])
+            ->where('status', '承認済み')
+            ->get();
+
+        // 画面に渡す
+        return view('admin.stamp_request.list', compact('pendingRequests', 'approvedRequests'));
     }
 }
