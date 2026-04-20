@@ -70,3 +70,19 @@ body {
     border: none;
     border-radius: 5px;
 }
+
+/* 管理者用の調整 */
+.admin-detail .value {
+    padding: 8px 0;
+}
+
+/* inputやtextareaを無効化（念のため） */
+.admin-detail input,
+.admin-detail textarea {
+    display: none;
+}
+
+/* ボタン位置を中央寄せにしたい場合 */
+.admin-detail ~ .detail-actions {
+    text-align: center;
+}

@@ -40,7 +40,7 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
+                <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
@@ -76,7 +76,7 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
+                <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
             </tr>
             @empty
             <tr>

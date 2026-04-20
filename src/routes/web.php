@@ -65,9 +65,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     // 管理者勤怠一覧
     Route::get('/attendance/list', [AttendanceController::class, 'adminList'])->name('admin.attendance.list');
 
-    // 管理者勤怠詳細
-    Route::get('/attendance/{id}', [AttendanceController::class, 'adminDetail'])->name('admin.attendance.detail');
-
     // スタッフ一覧
     Route::get('/staff/list', [StaffController::class, 'list'])->name('admin.staff.list');
 
@@ -80,4 +77,14 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     // 修正申請承認画面
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}', [StampCorrectionRequestController::class, 'approve'])->name('admin.stamp_request.approve');
+
+    // 承認処理
+    Route::post(
+        '/stamp_correction_request/approve/{id}',
+        [StampCorrectionRequestController::class, 'updateStatus']
+    )
+        ->name('admin.stamp_request.updateStatus');
+
+    // 管理者勤怠詳細
+    Route::get('/attendance/{id}', [AttendanceController::class, 'adminDetail'])->name('admin.attendance.detail');
 });

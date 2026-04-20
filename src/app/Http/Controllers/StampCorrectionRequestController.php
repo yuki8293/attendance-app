@@ -77,4 +77,31 @@ class StampCorrectionRequestController extends Controller
         // 画面に渡す
         return view('admin.stamp_request.list', compact('pendingRequests', 'approvedRequests'));
     }
+
+    // 管理者：修正申請の詳細表示（承認画面）
+    public function approve($attendance_correct_request_id)
+    {
+        // 修正申請データを取得（userとattendanceも一緒に取得）
+        // with(['user', 'attendance'])でリレーションを事前読み込み（N+1問題対策）
+        $attendance_correct_request = AttendanceRequest::with(['user', 'attendance'])
+            // 指定されたIDのデータを取得（なければ404エラー）
+            ->findOrFail($attendance_correct_request_id);
+
+        // 取得したデータを承認画面（Blade）に渡して表示
+        // compactで変数名そのまま渡せる
+        return view('admin.stamp_request.approve', compact('attendance_correct_request'));
+    }
+
+    // 管理者：承認処理
+    public function updateStatus($id)
+    {
+        $request = \App\Models\AttendanceRequest::findOrFail($id);
+
+        $request->status = '承認済み';
+        $request->save();
+
+        return response()->json([
+            'status' => 'ok'
+        ]);
+    }
 }
