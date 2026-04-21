@@ -68,7 +68,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     // スタッフ一覧
     Route::get('/staff/list', [StaffController::class, 'list'])->name('admin.staff.list');
 
-    // スタッフ別勤怠一覧（
+    // スタッフ別勤怠一覧
     Route::get('/attendance/staff/{id}', [AttendanceController::class, 'staffAttendance'])->name('admin.staff.attendance');
 
     // 修正申請一覧
