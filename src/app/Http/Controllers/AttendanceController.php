@@ -9,6 +9,7 @@ use App\Models\Attendance;
 
 use Illuminate\Http\Request;
 use App\Models\BreakTime;
+use App\Models\User;
 
 class AttendanceController extends Controller
 {
@@ -217,5 +218,23 @@ class AttendanceController extends Controller
         // 管理者用の詳細画面にデータを渡して表示する
         // compact('attendance') で $attendance をそのままビューに渡す
         return view('admin.attendance.detail', compact('attendance'));
+    }
+
+    public function staffAttendance($id)
+    {
+        // 対象ユーザー取得
+        $user = User::findOrFail($id);
+
+        // 今月の年月取得
+        $year = Carbon::now()->year;
+        $month = Carbon::now()->month;
+
+        // 今月分の勤怠だけ取得
+        $attendances = Attendance::where('user_id', $id)
+            ->whereYear('work_date', $year)
+            ->whereMonth('work_date', $month)
+            ->get();
+
+        return view('admin.attendance.staff', compact('user', 'attendances', 'year', 'month'));
     }
 }
