@@ -22,7 +22,7 @@ body {
 /* 行 */
 .row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
     border-bottom: 3px solid #f0f0f0;
 }
@@ -42,12 +42,17 @@ body {
 .value {
     flex: 1;
     font-weight: 600;
+
+    display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
 }
 
 /* input */
 .value input {
     padding: 8px;
-    margin: 0 5px;
+    margin: 0;
 }
 
 /* textarea */
@@ -58,6 +63,7 @@ body {
 
 .detail-actions {
     max-width: 700px;
+    width: 100%;
     margin: 10px auto 0;
     text-align: right;
 }
@@ -85,4 +91,23 @@ body {
 /* ボタン位置を中央寄せにしたい場合 */
 .admin-detail ~ .detail-actions {
     text-align: center;
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    .detail-container {
+        max-width: 900px;
+        /* 今700 → 少し広げる */
+        padding: 50px;
+    }
+
+    .detail-title {
+        max-width: 900px;
+        font-size: 26px;
+    }
+
+    .detail-actions {
+        max-width: 900px;
+    }
+
 }

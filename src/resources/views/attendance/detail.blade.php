@@ -13,20 +13,16 @@
 <div class="page">
     <div class="detail-container">
 
-        {{-- ▼ 更新フォーム --}}
-        <form action="{{ route('stamp_correction_request.store') }}" method="POST">
+        <form id="edit-form" action="{{ route('stamp_correction_request.store') }}" method="POST">
             @csrf
 
-            {{-- 勤怠ID（超重要） --}}
             <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
 
-            {{-- 名前（表示だけ） --}}
             <div class="row">
                 <div class="label">名前</div>
                 <div class="value">{{ $attendance->user->name }}</div>
             </div>
 
-            {{-- 日付（表示だけ） --}}
             <div class="row">
                 <div class="label">日付</div>
                 <div class="value">
@@ -34,7 +30,6 @@
                 </div>
             </div>
 
-            {{-- 出勤・退勤 --}}
             <div class="row">
                 <div class="label">出勤・退勤</div>
                 <div class="value">
@@ -46,7 +41,7 @@
                 </div>
             </div>
 
-            {{-- 休憩（入力） --}}
+            {{-- 休憩 --}}
             @foreach($attendance->breaks->take(2) as $index => $break)
             <div class="row">
                 <div class="label">休憩{{ $loop->iteration }}</div>
@@ -60,7 +55,6 @@
             </div>
             @endforeach
 
-            {{-- 休憩（追加） --}}
             <div class="row">
                 <div class="label">休憩2</div>
                 <div class="value">
@@ -70,20 +64,22 @@
                 </div>
             </div>
 
-            {{-- 備考 --}}
             <div class="row">
                 <div class="label">備考</div>
                 <div class="value">
                     <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
                 </div>
             </div>
-    </div>
 
-    {{-- 修正ボタン --}}
-    <div class="detail-actions">
-        <button type="submit">修正</button>
-    </div>
+        </form>
 
+
+        <div class="detail-actions">
+            <button type="submit">修正</button>
+        </div>
+
+
+</div>
 </div>
 
 @endsection
