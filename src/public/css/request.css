@@ -1,0 +1,123 @@
+/* =========================
+   申請一覧画面
+========================= */
+
+/* 背景色（画面全体を薄いグレーにする） */
+body {
+    background-color: #f5f5f5;
+}
+
+/* 全体を中央に寄せる箱 */
+.request-container {
+    max-width: 1100px;
+    /* 横幅の最大サイズ */
+    margin: 50px auto;
+    /* 上下50px、左右中央 */
+}
+
+/* ページタイトル「申請一覧」 */
+.request-title {
+    font-size: 28px;
+    /* 文字サイズ */
+    margin-bottom: 30px;
+    /* 下に余白 */
+}
+
+/* 承認待ち・承認済みボタンをまとめる箱 */
+.request-tabs {
+    margin-bottom: 20px;
+}
+
+/* タブボタン */
+.tab-button {
+    padding: 10px 24px;
+    /* ボタン内側の余白 */
+    background-color: black;
+    /* 背景黒 */
+    color: white;
+    /* 文字白 */
+    border: none;
+    /* 枠線なし */
+    border-radius: 5px;
+    /* 角丸 */
+    margin-right: 10px;
+    /* ボタン同士の間隔 */
+    cursor: pointer;
+    /* マウス乗せると指マーク */
+}
+
+/* 承認待ち・承認済みエリア */
+.request-content {
+    margin-top: 20px;
+}
+
+/* 「承認待ち」「承認済み」の見出し */
+.tab-title {
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+/* テーブル全体 */
+.request-table {
+    width: 100%;
+    /* 横幅いっぱい */
+    border-collapse: collapse;
+    /* 枠線を1本にまとめる */
+    background-color: white;
+    /* 背景白 */
+}
+
+/* 表の見出し・中身 共通 */
+.request-table th,
+.request-table td {
+    padding: 14px;
+    /* セル内余白 */
+    text-align: center;
+    /* 文字中央 */
+    border-bottom: 1px solid #ddd;
+    /* 下線 */
+}
+
+/* 見出し行だけ背景色変更 */
+.request-table th {
+    background-color: #fafafa;
+}
+
+/* 詳細リンク */
+.detail-link {
+    color: black;
+    text-decoration: none;
+    /* 下線なし */
+    font-weight: bold;
+    /* 太字 */
+}
+
+/* =========================
+PCレスポンシブ対応
+1400px〜1540px
+========================= */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    /* 横幅を広げる */
+    .request-container {
+        max-width: 1300px;
+    }
+
+    /* タイトル文字少し大きく */
+    .request-title {
+        font-size: 32px;
+    }
+
+    /* ボタン少し大きく */
+    .tab-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    /* 表の文字と余白を広げる */
+    .request-table th,
+    .request-table td {
+        padding: 16px;
+        font-size: 16px;
+    }
+}

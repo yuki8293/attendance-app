@@ -2,25 +2,29 @@
 
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/request.css') }}">
+@endsection
+
 @section('content')
 
-<div class="container">
+<div class="request-container">
 
-    <h1>申請一覧</h1>
+    <h1 class="request-title">申請一覧</h1>
 
     {{-- タブ --}}
-    <div class="tabs">
-        <button onclick="showTab('pending')">承認待ち</button>
-        <button onclick="showTab('approved')">承認済み</button>
+    <div class="request-tabs">
+        <button class="tab-button" onclick="showTab('pending')">承認待ち</button>
+        <button class="tab-button" onclick="showTab('approved')">承認済み</button>
     </div>
 
     {{-- ========================= --}}
     {{-- 承認待ち --}}
     {{-- ========================= --}}
-    <div id="pending">
-        <h2>承認待ち</h2>
+    <div id="pending" class="request-content">
+        <h2 class="tab-title">承認待ち</h2>
 
-        <table border="1">
+        <table class="request-table">
             <tr>
                 <th>状態</th>
                 <th>名前</th>
@@ -40,7 +44,7 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
+                <td><a class="detail-link" href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
@@ -53,10 +57,10 @@
     {{-- ========================= --}}
     {{-- 承認済み --}}
     {{-- ========================= --}}
-    <div id="approved" style="display:none;">
-        <h2>承認済み</h2>
+    <div id="approved" class="request-content" style="display:none;">
+        <h2 class="tab-title">承認済み</h2>
 
-        <table border="1">
+        <table class="request-table">
             <tr>
                 <th>状態</th>
                 <th>名前</th>
@@ -76,7 +80,7 @@
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at }}</td>
-                <td><a href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
+                <td><a class="detail-link" href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
