@@ -38,6 +38,14 @@
                     〜
                     <input type="time" name="end_time"
                         value="{{ optional($attendance->end_time)->format('H:i') }}">
+
+                    @error('start_time')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
+
+                    @error('end_time')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -68,8 +76,14 @@
                 <div class="label">備考</div>
                 <div class="value">
                     <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
+
+                    @error('note')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
+
                 </div>
             </div>
+
 
         </form>
 
@@ -79,7 +93,7 @@
         </div>
 
 
-</div>
+    </div>
 </div>
 
 @endsection

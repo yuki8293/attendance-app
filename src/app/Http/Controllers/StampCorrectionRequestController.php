@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AttendanceRequest;
+use App\Http\Requests\StampCorrectionRequest;
 
 class StampCorrectionRequestController extends Controller
 {
@@ -34,7 +35,7 @@ class StampCorrectionRequestController extends Controller
     }
 
     // 申請を保存する処理
-    public function store(Request $request)
+    public function store(StampCorrectionRequest $request)
     {
         // AttendanceRequestテーブルにデータを新規登録
         AttendanceRequest::create([
