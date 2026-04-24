@@ -1,3 +1,5 @@
+{{-- 勤怠詳細画面＿承認待ち勤怠画面 --}}
+
 @extends('layouts.app')
 
 @section('content')

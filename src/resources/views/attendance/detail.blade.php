@@ -75,7 +75,7 @@
 
 
         <div class="detail-actions">
-            <button type="submit">修正</button>
+            <button type="submit" form="edit-form">修正</button>
         </div>
 
 
