@@ -38,5 +38,9 @@
 
     </table>
 
+    <a href="{{ route('admin.staff.attendance.csv', [$user->id, $year, $month]) }}">
+        CSV出力
+    </a>
+
 </div>
 @endsection

@@ -71,6 +71,12 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     // スタッフ別勤怠一覧
     Route::get('/attendance/staff/{id}', [AttendanceController::class, 'staffAttendance'])->name('admin.staff.attendance');
 
+    // スタッフ別勤怠CSV出力
+    Route::get(
+        '/attendance/staff/{id}/csv/{year}/{month}',
+        [AttendanceController::class, 'exportCsv']
+    )->name('admin.staff.attendance.csv');
+
     // 修正申請一覧
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'list'])
         ->name('admin.stamp_request.list');

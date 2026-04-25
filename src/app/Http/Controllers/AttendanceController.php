@@ -237,4 +237,61 @@ class AttendanceController extends Controller
 
         return view('admin.attendance.staff', compact('user', 'attendances', 'year', 'month'));
     }
+
+    // スタッフ別勤怠一覧のCSV出力
+    public function exportCsv($id, $year, $month)
+    {
+        // 指定されたスタッフ情報を取得
+        $user = User::findOrFail($id);
+
+        // 指定された年・月の勤怠データを取得
+        $attendances = Attendance::where('user_id', $id)
+            ->whereYear('work_date', $year)
+            ->whereMonth('work_date', $month)
+            ->get();
+
+        // ダウンロードするCSVファイル名を作成
+        $fileName = $user->name . '_' . $year . '_' . $month . '_attendance.csv';
+
+        // ダウンロード時の設定
+        $headers = [
+            // CSVファイルですよという指定
+            'Content-Type' => 'text/csv',
+
+            // 添付ファイルとしてダウンロードさせる指定
+            'Content-Disposition' => "attachment; filename={$fileName}",
+        ];
+
+        // CSVの中身を作る処理
+        $callback = function () use ($attendances) {
+
+            // 出力先を開く
+            $file = fopen('php://output', 'w');
+
+            // 1行目（見出し）
+            fputcsv($file, ['日付', '出勤', '退勤']);
+
+            // 勤怠データを1件ずつCSVに書き込む
+            foreach ($attendances as $attendance) {
+
+                fputcsv($file, [
+
+                    // 日付
+                    $attendance->work_date,
+
+                    // 出勤時間（あれば表示）
+                    optional($attendance->start_time)->format('H:i'),
+
+                    // 退勤時間（あれば表示）
+                    optional($attendance->end_time)->format('H:i'),
+                ]);
+            }
+
+            // ファイルを閉じる
+            fclose($file);
+        };
+
+        // CSVファイルをダウンロードさせる
+        return response()->stream($callback, 200, $headers);
+    }
 }
