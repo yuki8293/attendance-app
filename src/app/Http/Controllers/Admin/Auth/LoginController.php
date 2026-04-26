@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AdminLoginRequest;
 
 class LoginController extends Controller
 {
@@ -16,7 +17,7 @@ class LoginController extends Controller
     }
 
     // 管理者のログイン処理
-    public function login(Request $request)
+    public function login(AdminLoginRequest $request)
     {
         // 管理者用guardを使ってログイン認証を行う
         // adminテーブルのEメールとパスワードをチェック
@@ -24,13 +25,13 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ])) {
-             // ログイン成功時、管理者退勤一覧画面へリダイレクト
+            // ログイン成功時、管理者退勤一覧画面へリダイレクト
             return redirect()->route('admin.attendance.list');
         }
 
         // ログイン失敗時、エラーメッセージを表示してログイン画面に戻る
         return back()->withErrors([
-            'email' => 'ログインできません',
+            'email' => 'ログイン情報が登録されていません',
         ]);
     }
 

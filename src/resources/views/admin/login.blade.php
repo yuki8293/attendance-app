@@ -12,13 +12,6 @@
         <h1>管理者ログイン</h1>
     </div>
 
-    {{-- エラーメッセージ --}}
-    @error('email')
-    <div class="form__error">
-        {{ $message }}
-    </div>
-    @enderror
-
     <form method="POST" action="{{ route('admin.login') }}" class="form">
         @csrf
 
@@ -27,8 +20,14 @@
                 <label>メールアドレス</label>
             </div>
             <div class="form__input--text">
-                <input type="email" name="email" value="{{ old('email') }}" required>
+                <input type="email" name="email" value="{{ old('email') }}">
             </div>
+            {{-- エラーメッセージ --}}
+            @error('email')
+            <div class="form__error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <div class="form__group">
@@ -36,8 +35,15 @@
                 <label>パスワード</label>
             </div>
             <div class="form__input--text">
-                <input type="password" name="password" required>
+                <input type="password" name="password">
             </div>
+
+            {{-- エラーメッセージ --}}
+            @error('password')
+            <div class="form__error">
+                {{ $message }}
+            </div>
+            @enderror
         </div>
 
         <div class="form__button">
