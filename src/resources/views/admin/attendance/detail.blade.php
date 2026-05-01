@@ -74,7 +74,7 @@
             <div class="row">
                 <div class="label">備考</div>
                 <div class="value">
-                    <textarea name="note">{{ $attendance->note ?? '' }}</textarea>
+                    <textarea name="note">{{ old('note', $attendance->note) }}</textarea>
                 </div>
             </div>
 

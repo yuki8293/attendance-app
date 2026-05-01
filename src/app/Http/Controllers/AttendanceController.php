@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 // 時間を扱う便利ツール
 use Carbon\Carbon;
 use App\Models\Attendance;
+use App\Models\AttendanceRequest;
 
 use Illuminate\Http\Request;
 use App\Models\BreakTime;
@@ -119,6 +120,34 @@ class AttendanceController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'clock_in' => 'required',
+            'clock_out' => 'required|after:clock_in',
+            'note' => 'required',
+        ], [
+            'clock_out.after' => '出勤時間が不適切な値です',
+        ]);
+
+        if ($request->has('breaks')) {
+            foreach ($request->breaks as $break) {
+
+                // 休憩開始が退勤より後
+                if (!empty($break['start']) && $break['start'] > $request->clock_out) {
+                    return back()
+                        ->withErrors(['break_start' => '休憩時間が不適切な値です'])
+                        ->withInput();
+                }
+
+                // 休憩終了が退勤より後
+                if (!empty($break['end']) && $break['end'] > $request->clock_out) {
+                    return back()
+                        ->withErrors(['break_end' => '休憩時間もしくは退勤時間が不適切な値です'])
+                        ->withInput();
+                }
+            }
+        }
+        
         // 勤怠データ取得（休憩も一緒に）
         $attendance = Attendance::with('breaks')->findOrFail($id);
 
@@ -170,6 +199,16 @@ class AttendanceController extends Controller
                 'end_time'      => $request->break_new_end,
             ]);
         }
+
+        //修正申請を作成
+        AttendanceRequest::create([
+            'attendance_id' => $attendance->id,
+            'user_id' => auth()->id(),
+            'start_time' => $request->clock_in,
+            'end_time' => $request->clock_out,
+            'note' => $request->note,
+            'status' => '承認待ち',
+        ]);
 
         // 更新後、詳細画面にリダイレクト
         return redirect()->route('attendance.pending', $id);

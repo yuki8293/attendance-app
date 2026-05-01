@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRequest;
 use App\Http\Requests\StampCorrectionRequest;
+use App\Models\Attendance;
 
 class StampCorrectionRequestController extends Controller
 {
@@ -39,23 +40,29 @@ class StampCorrectionRequestController extends Controller
     {
         // AttendanceRequestテーブルにデータを新規登録
         AttendanceRequest::create([
-            'user_id' => auth()->id(),
+
             // ログインしているユーザーのIDを保存
-
-            'attendance_id' => $request->attendance_id,
+            'user_id' => auth()->id(),
             // 対象となる勤怠データのID
-
-            'start_time' => $request->start_time,
+            'attendance_id' => $request->attendance_id,
             // 修正後の出勤時間
-
-            'end_time' => $request->end_time,
+            'start_time' => $request->start_time,
             // 修正後の退勤時間
-
-            'note' => $request->note,
+            'end_time' => $request->end_time,
             // 修正理由
+            'note' => $request->note,
 
             'status' => '承認待ち',
-            // ステータス（これがないと一覧に表示されない⚠️）
+        ]);
+
+        // 対象の勤怠データを取得（修正申請の対象になっている勤怠
+        $attendance = Attendance::find($request->attendance_id);
+
+        // 勤怠テーブルの備考を更新
+        // ※詳細画面では attendance テーブルの note を表示しているため、
+        // ここも更新しないと画面に反映されない
+        $attendance->update([
+            'note' => $request->note,
         ]);
 
         // 保存後、申請一覧画面にリダイレクト
