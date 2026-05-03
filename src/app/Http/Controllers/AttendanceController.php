@@ -147,7 +147,7 @@ class AttendanceController extends Controller
                 }
             }
         }
-        
+
         // 勤怠データ取得（休憩も一緒に）
         $attendance = Attendance::with('breaks')->findOrFail($id);
 
@@ -212,6 +212,46 @@ class AttendanceController extends Controller
 
         // 更新後、詳細画面にリダイレクト
         return redirect()->route('attendance.pending', $id);
+    }
+
+    public function adminUpdate(Request $request, $id)
+    {
+        // 出勤・退勤チェック
+        if ($request->start_time && $request->end_time && $request->start_time >= $request->end_time) {
+            return back()->withErrors([
+                'start_time' => '出勤時間もしくは退勤時間が不適切な値です'
+            ]);
+        }
+
+        // 休憩開始 > 退勤
+        if ($request->break_start && $request->end_time && $request->break_start > $request->end_time) {
+            return back()->withErrors([
+                'break_start' => '休憩時間が不適切な値です'
+            ]);
+        }
+
+        // 休憩終了 > 退勤
+        if ($request->break_end && $request->end_time && $request->break_end > $request->end_time) {
+            return back()->withErrors([
+                'break_end' => '休憩時間もしくは退勤時間が不適切な値です'
+            ]);
+        }
+
+        // 備考チェック
+        if (empty($request->note)) {
+            return back()->withErrors([
+                'note' => '備考を記入してください'
+            ]);
+        }
+
+        // 更新
+        Attendance::findOrFail($id)->update([
+            'start_time' => $request->start_time,
+            'end_time'   => $request->end_time,
+            'note'       => $request->note,
+        ]);
+
+        return redirect()->route('admin.attendance.detail', $id);
     }
 
     // 承認待ち画面を表示するメソッド
