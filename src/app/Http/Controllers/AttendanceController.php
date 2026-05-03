@@ -299,16 +299,24 @@ class AttendanceController extends Controller
         return view('admin.attendance.detail', compact('attendance'));
     }
 
-    public function staffAttendance($id)
+    public function staffAttendance(Request $request, $id)
     {
         // 対象ユーザー取得
         $user = User::findOrFail($id);
 
-        // 今月の年月取得
-        $year = Carbon::now()->year;
-        $month = Carbon::now()->month;
+        // クエリから年月取得（例: 2026-05）
+        $monthParam = $request->input('month');
 
-        // 今月分の勤怠だけ取得
+        // 月が指定されていればそれ、なければ今月
+        $date = $monthParam
+            ? Carbon::createFromFormat('Y-m', $monthParam)
+            : Carbon::now();
+
+        // 年と月を取り出す
+        $year = $date->year;
+        $month = $date->month;
+
+        // 指定された月の勤怠を取得
         $attendances = Attendance::where('user_id', $id)
             ->whereYear('work_date', $year)
             ->whereMonth('work_date', $month)
