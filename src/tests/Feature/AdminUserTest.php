@@ -148,7 +148,7 @@ class AdminUserTest extends TestCase
         // 正常に表示されるか
         $response->assertStatus(200);
     }
-    
+
     public function test_admin_can_see_detail_link()
     {
         $admin = Admin::factory()->create();
