@@ -19,6 +19,9 @@ class AttendanceRequest extends Model
         'end_time',
         'note',
         'status',
+
+        'break_start',
+        'break_end',
     ];
 
     //申請が多/ユーザー、勤怠が１

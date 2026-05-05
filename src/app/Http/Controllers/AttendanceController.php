@@ -24,6 +24,7 @@ class AttendanceController extends Controller
     //処理
     public function store(Request $request)
     {
+
         // 今日の勤怠データ取得
         $attendance = Attendance::where('user_id', Auth::id())
             ->whereDate('work_date', Carbon::today())
@@ -171,14 +172,11 @@ class AttendanceController extends Controller
             // 既存の休憩データをループで処理
             foreach ($request->breaks as $index => $breakData) {
 
-                // 既存データがある場合のみ更新
-                if (isset($attendance->breaks[$index])) {
-                    $attendance->breaks[$index]->update([
+                $break = $attendance->breaks[$index] ?? null;
 
-                        // 休憩開始時間を更新
+                if ($break) {
+                    $break->update([
                         'start_time' => $breakData['start'],
-
-                        // 休憩終了時間を更新
                         'end_time'   => $breakData['end'],
                     ]);
                 }
@@ -216,6 +214,7 @@ class AttendanceController extends Controller
 
     public function adminUpdate(Request $request, $id)
     {
+
         // 出勤・退勤チェック
         if ($request->start_time && $request->end_time && $request->start_time >= $request->end_time) {
             return back()->withErrors([
@@ -261,9 +260,16 @@ class AttendanceController extends Controller
         // 休憩（breaks）とユーザー情報（user）も一緒に取得する
         $attendance = Attendance::with('breaks', 'user')->findOrFail($id);
 
+        // 指定された勤怠IDに紐づく「承認待ち」の修正申請を取得
+        // 最新の申請を1件だけ取得する
+        $requestData = AttendanceRequest::where('attendance_id', $id)
+            ->where('status', '承認待ち')
+            ->latest()
+            ->first();
+
         // 承認待ち画面（pending.blade.php）を表示
         // $attendance のデータをビューに渡す
-        return view('attendance.pending', compact('attendance'));
+        return view('attendance.pending', compact('attendance', 'requestData'));
     }
 
     // 管理者：勤怠一覧

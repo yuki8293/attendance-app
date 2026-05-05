@@ -14,21 +14,29 @@
     日付：{{ \Carbon\Carbon::parse($attendance->work_date)->format('Y/m/d') }}
 </div>
 
+@php
+$start = $requestData->start_time ?? $attendance->start_time;
+$end = $requestData->end_time ?? $attendance->end_time;
+@endphp
+
 <div>
     出勤：
-    {{ $attendance->start_time ? \Carbon\Carbon::parse($attendance->start_time)->format('H:i') : '' }}
+    {{ $start ? \Carbon\Carbon::parse($start)->format('H:i') : '' }}
     〜
-    {{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}
+    {{ $end ? \Carbon\Carbon::parse($end)->format('H:i') : '' }}
 </div>
 
-@foreach($attendance->breaks->take(2) as $break)
+@php
+$breakStart = $requestData->break_start ?? null;
+$breakEnd = $requestData->break_end ?? null;
+@endphp
+
 <div>
     休憩：
-    {{ \Carbon\Carbon::parse($break->start_time)->format('H:i') }}
+    {{ $breakStart ? \Carbon\Carbon::parse($breakStart)->format('H:i') : '' }}
     〜
-    {{ \Carbon\Carbon::parse($break->end_time)->format('H:i') }}
+    {{ $breakEnd ? \Carbon\Carbon::parse($breakEnd)->format('H:i') : '' }}
 </div>
-@endforeach
 
 <div>
     備考：{{ $attendance->note }}

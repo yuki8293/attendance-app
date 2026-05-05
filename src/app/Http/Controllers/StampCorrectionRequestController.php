@@ -38,6 +38,7 @@ class StampCorrectionRequestController extends Controller
     // 申請を保存する処理
     public function store(StampCorrectionRequest $request)
     {
+
         // AttendanceRequestテーブルにデータを新規登録
         AttendanceRequest::create([
 
@@ -53,6 +54,9 @@ class StampCorrectionRequestController extends Controller
             'note' => $request->note,
 
             'status' => '承認待ち',
+
+            'break_start' => $request->input('breaks.0.start'),
+            'break_end'   => $request->input('breaks.0.end'),
         ]);
 
         // 対象の勤怠データを取得（修正申請の対象になっている勤怠
