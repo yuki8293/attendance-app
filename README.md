@@ -42,6 +42,7 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 
 ```
+
 #### コンテナに入る
 
 ```
@@ -57,9 +58,18 @@ php artisan key:generate
 #### マイグレーション・シーディングを実行
 
 ```
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
+### 管理者
+
+email: admin@test.com  
+password: password
+
+### 一般ユーザー
+
+email: user@test.com  
+password: password
 
 ## 使用技術（実行環境）
 

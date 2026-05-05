@@ -61,3 +61,18 @@
     text-align: center;
 }
 
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    .login-form__content {
+        padding: 50px 0;
+    }
+
+    .form {
+        max-width: 500px;
+    }
+
+    .form__button-submit {
+        height: 55px;
+        font-size: 18px;
+    }
+}

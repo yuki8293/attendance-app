@@ -15,6 +15,12 @@
     <form method="POST" action="{{ route('admin.login') }}" class="form">
         @csrf
 
+        @if ($errors->has('login_error'))
+        <div class="form__error">
+            {{ $errors->first('login_error') }}
+        </div>
+        @endif
+        
         <div class="form__group">
             <div class="form__group-title">
                 <label>メールアドレス</label>
