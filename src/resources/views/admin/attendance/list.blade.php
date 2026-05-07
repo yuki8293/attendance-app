@@ -50,10 +50,11 @@
 
         <thead class="admin-attendance-list__thead">
             <tr class="admin-attendance-list__row">
-                <th class="admin-attendance-list__header">日付</th>
                 <th class="admin-attendance-list__header">名前</th>
                 <th class="admin-attendance-list__header">出勤</th>
                 <th class="admin-attendance-list__header">退勤</th>
+                <th class="admin-attendance-list__header">休憩</th>
+                <th class="admin-attendance-list__header">合計</th>
                 <th class="admin-attendance-list__header">詳細</th>
             </tr>
         </thead>
@@ -61,11 +62,6 @@
         <tbody class="admin-attendance-list__body">
             @foreach ($attendances as $attendance)
             <tr class="admin-attendance-list__row">
-
-                {{-- 日付 --}}
-                <td class="admin-attendance-list__data">
-                    {{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}
-                </td>
 
                 {{-- 名前 --}}
                 <td class="admin-attendance-list__data">
@@ -80,6 +76,16 @@
                 {{-- 退勤 --}}
                 <td class="admin-attendance-list__data">
                     {{ optional($attendance->end_time)->format('H:i') }}
+                </td>
+
+                {{-- 休憩 --}}
+                <td class="admin-attendance-list__data">
+                    {{ $attendance->break_time ?? '' }}
+                </td>
+
+                {{-- 合計 --}}
+                <td class="admin-attendance-list__data">
+                    {{ $attendance->work_time ?? '' }}
                 </td>
 
                 {{-- 詳細 --}}

@@ -31,7 +31,7 @@ class LoginController extends Controller
 
         // ログイン失敗時、エラーメッセージを表示してログイン画面に戻る
         return back()->withErrors([
-            'login_error' => 'ログイン情報が登録されていません。'
+            'login_error' => 'ログイン情報が登録されていません'
         ])->withInput();
     }
 

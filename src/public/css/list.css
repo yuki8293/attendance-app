@@ -1,5 +1,10 @@
 /* 勤怠一覧画面css */
 
+/* 背景色（画面全体を薄いグレーにする） */
+body {
+    background-color: #eeeeee;
+}
+
 /* 全体 */
 .attendance-list {
     max-width: 900px;
@@ -19,6 +24,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    background-color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
 }
 
 /* ナビボタン */
@@ -44,8 +52,9 @@
 
 /* ヘッダー */
 .attendance-list__table th {
-    background-color: #f5f5f5;
+    background-color: white;
     font-weight: normal;
+    color: #777;
 }
 
 /* セル */

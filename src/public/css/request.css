@@ -1,10 +1,10 @@
 /* =========================
-   申請一覧画面
+   申請一覧画面(一般ユーザー)
 ========================= */
 
 /* 背景色（画面全体を薄いグレーにする） */
 body {
-    background-color: #f5f5f5;
+    background-color: #eeeeee;
 }
 
 /* 全体を中央に寄せる箱 */
@@ -25,25 +25,27 @@ body {
 
 /* 承認待ち・承認済みボタンをまとめる箱 */
 .request-tabs {
-    margin-bottom: 20px;
+    display: flex;
+        gap: 20px;
+        border-bottom: 1px solid black;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
 }
 
 /* タブボタン */
 .tab-button {
-    padding: 10px 24px;
-    /* ボタン内側の余白 */
-    background-color: black;
-    /* 背景黒 */
-    color: white;
-    /* 文字白 */
-    border: none;
-    /* 枠線なし */
-    border-radius: 5px;
-    /* 角丸 */
-    margin-right: 10px;
-    /* ボタン同士の間隔 */
-    cursor: pointer;
-    /* マウス乗せると指マーク */
+    background: none;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: #666;
+        cursor: pointer;
+        padding: 0;
+}
+
+/* ホバー時 */
+.tab-button:hover {
+    color: black;
 }
 
 /* 承認待ち・承認済みエリア */
@@ -80,7 +82,8 @@ body {
 
 /* 見出し行だけ背景色変更 */
 .request-table th {
-    background-color: #fafafa;
+    background-color: white;
+    color: #777;
 }
 
 /* 詳細リンク */

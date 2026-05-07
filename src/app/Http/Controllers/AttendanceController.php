@@ -285,10 +285,57 @@ class AttendanceController extends Controller
         // 時間を0時にそろえて「その日単位」で扱えるようにする
         $date = $date->startOfDay();
 
-        // その日の勤怠だけ取得
-        $attendances = Attendance::with('user')
+        // 指定日の勤怠データを取得
+        // user → ユーザー情報
+        // breaks → 休憩情報
+        $attendances = Attendance::with(['user', 'breaks'])
             ->whereDate('work_date', $date)
             ->get();
+
+        // 各勤怠データごとに
+        // 休憩時間・合計勤務時間を計算
+        foreach ($attendances as $attendance) {
+
+            // 休憩合計時間（分）
+            $breakMinutes = 0;
+
+            // 休憩データを繰り返す
+            foreach ($attendance->breaks as $break) {
+
+                // 休憩開始・終了の両方がある場合のみ計算
+                if ($break->start_time && $break->end_time) {
+
+                    // 休憩時間（分）を加算
+                    $breakMinutes += Carbon::parse($break->start_time)
+                        ->diffInMinutes(Carbon::parse($break->end_time));
+                }
+            }
+
+            // 休憩時間を「時間:分」に変換
+            $attendance->break_time =
+                floor($breakMinutes / 60) . ':' .
+                str_pad($breakMinutes % 60, 2, '0', STR_PAD_LEFT);
+
+            // 出勤・退勤の両方がある場合
+            if ($attendance->start_time && $attendance->end_time) {
+
+                // 勤務時間（分）を計算
+                $workMinutes = Carbon::parse($attendance->start_time)
+                    ->diffInMinutes(Carbon::parse($attendance->end_time));
+
+                // 休憩時間を引く
+                $workMinutes -= $breakMinutes;
+
+                // 合計勤務時間を「時間:分」に変換
+                $attendance->work_time =
+                    floor($workMinutes / 60) . ':' .
+                    str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT);
+            } else {
+
+                // 出勤・退勤どちらかがない場合は空白
+                $attendance->work_time = '';
+            }
+        }
 
         return view('admin.attendance.list', compact('attendances', 'date'));
     }
