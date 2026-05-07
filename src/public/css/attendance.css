@@ -63,3 +63,37 @@ body {
     border-radius: 5px;
 }
 
+/* =========================
+PCレスポンシブ対応（1400〜1540px）
+========================= */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    /* 全体を少し広げる */
+    .admin-attendance-list {
+        max-width: 1200px;
+    }
+
+    /* タイトル大きく＆見やすく */
+    .admin-attendance-list__title {
+        font-size: 32px;
+        margin-left: 10px;
+    }
+
+    /* ナビの余白調整 */
+    .admin-attendance-list__nav {
+        padding: 20px 30px;
+    }
+
+    /* テーブル余白＆文字サイズ */
+    .admin-attendance-list__header,
+    .admin-attendance-list__data {
+        padding: 16px;
+        font-size: 16px;
+    }
+
+    /* 詳細ボタン少し大きく */
+    .admin-attendance-list__detail-link {
+        padding: 8px 14px;
+    }
+}
+
