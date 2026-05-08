@@ -35,11 +35,10 @@
                 <td>{{ $request->status }}</td>
                 <td>{{ $request->user->name ?? '' }}</td>
                 <td>
-                    {{ $request->attendance->work_date ?? '' }}
-                    {{ $request->start_time }}〜{{ $request->end_time }}
+                    {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
-                <td>{{ $request->created_at }}</td>
+                <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y/m/d') }}</td>
                 <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
             </tr>
             @empty
@@ -71,16 +70,15 @@
                 <td>{{ $request->status }}</td>
                 <td>{{ $request->user->name ?? '' }}</td>
                 <td>
-                    {{ $request->attendance->date ?? '' }}
-                    {{ $request->start_time }}〜{{ $request->end_time }}
+                    {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
-                <td>{{ $request->created_at }}</td>
+                <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y/m/d') }}</td>
                 <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
             </tr>
             @empty
             <tr>
-                <td colspan=" 6">承認済みの申請はありません</td>
+                <td colspan="6">承認済みの申請はありません</td>
             </tr>
             @endforelse
         </table>
