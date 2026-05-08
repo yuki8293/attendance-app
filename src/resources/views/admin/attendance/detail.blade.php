@@ -19,6 +19,12 @@
         {{-- 勤怠ID --}}
         <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
 
+        @if($pendingRequest)
+        <p class="pending-message">
+            承認待ちのため修正はできません。
+        </p>
+        @endif
+
         <div class="detail-container">
 
             {{-- 名前 --}}
@@ -105,9 +111,11 @@
         </div>
 
         {{-- ボタン --}}
+        @if(!$pendingRequest)
         <div class="detail-actions">
             <button type="submit">修正</button>
         </div>
+        @endif
 
     </form>
 

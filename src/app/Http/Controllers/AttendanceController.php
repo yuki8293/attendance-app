@@ -308,7 +308,7 @@ class AttendanceController extends Controller
                 ]);
             }
         }
-        
+
         return redirect()->route('admin.attendance.detail', $id);
     }
 
@@ -406,9 +406,14 @@ class AttendanceController extends Controller
         // → 画面で名前や休憩時間を表示するため
         $attendance = Attendance::with('user', 'breaks')->findOrFail($id);
 
+        // この勤怠に「承認待ち」の申請があるか確認
+        $pendingRequest = AttendanceRequest::where('attendance_id', $attendance->id)
+            ->where('status', '承認待ち')
+            ->exists();
+
         // 管理者用の詳細画面にデータを渡して表示する
         // compact('attendance') で $attendance をそのままビューに渡す
-        return view('admin.attendance.detail', compact('attendance'));
+        return view('admin.attendance.detail', compact('attendance', 'pendingRequest'));
     }
 
     public function staffAttendance(Request $request, $id)

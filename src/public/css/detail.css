@@ -1,4 +1,4 @@
-/* 勤怠詳細画面(一般ユーザー) */
+/* 勤怠詳細画面(一般ユーザー) (管理者)*/
 
 body {
     background-color: #f0f0f0;
@@ -80,6 +80,13 @@ body {
     color: red;
     font-size: 12px;
     margin-top: 4px;
+}
+
+.pending-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /* 管理者用の調整 */
