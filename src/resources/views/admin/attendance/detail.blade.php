@@ -12,8 +12,9 @@
 
 <div class="page">
 
-    <form action="{{ route('stamp_correction_request.store') }}" method="POST">
+    <form action="{{ route('admin.attendance.update', $attendance->id) }}" method="POST">
         @csrf
+        @method('PUT')
 
         {{-- 勤怠ID --}}
         <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
@@ -43,8 +44,17 @@
                     〜
                     <input type="time" name="end_time"
                         value="{{ optional($attendance->end_time)->format('H:i') }}">
+
+                    @error('start_time')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
+
+                    @error('end_time')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
+
 
             {{-- 休憩 --}}
             @foreach($attendance->breaks->take(2) as $index => $break)
@@ -58,15 +68,24 @@
                         value="{{ optional($break->end_time)->format('H:i') }}">
                 </div>
             </div>
+
             @endforeach
+
+            @error('break_start')
+            <p class="error-message">{{ $message }}</p>
+            @enderror
+
+            @error('break_end')
+            <p class="error-message">{{ $message }}</p>
+            @enderror
 
             {{-- 休憩追加 --}}
             <div class="row">
                 <div class="label">休憩2</div>
                 <div class="value">
-                    <input type="time" name="break_new_start">
+                    <input type="time" name="breaks[new][start]">
                     〜
-                    <input type="time" name="break_new_end">
+                    <input type="time" name="breaks[new][end]">
                 </div>
             </div>
 
@@ -75,6 +94,11 @@
                 <div class="label">備考</div>
                 <div class="value">
                     <textarea name="note">{{ old('note', $attendance->note) }}</textarea>
+
+                    @error('note')
+                    <div class="error-message">{{ $message }}</div>
+                    @enderror
+
                 </div>
             </div>
 

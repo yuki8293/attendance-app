@@ -215,26 +215,71 @@ class AttendanceController extends Controller
 
     public function adminUpdate(Request $request, $id)
     {
+        $attendance = Attendance::findOrFail($id);
 
         // 出勤・退勤チェック
-        if ($request->start_time && $request->end_time && $request->start_time >= $request->end_time) {
+        if (
+            $request->start_time &&
+            $request->end_time &&
+            $request->start_time >= $request->end_time
+        ) {
             return back()->withErrors([
                 'start_time' => '出勤時間もしくは退勤時間が不適切な値です'
             ]);
         }
 
-        // 休憩開始 > 退勤
-        if ($request->break_start && $request->end_time && $request->break_start > $request->end_time) {
+        // 休憩開始が退勤時間より後
+        if (
+            $request->break_start &&
+            $request->end_time &&
+            $request->break_start > $request->end_time
+        ) {
             return back()->withErrors([
                 'break_start' => '休憩時間が不適切な値です'
             ]);
         }
 
-        // 休憩終了 > 退勤
-        if ($request->break_end && $request->end_time && $request->break_end > $request->end_time) {
+        // 休憩終了が退勤時間より後
+        if (
+            $request->break_end &&
+            $request->end_time &&
+            $request->break_end > $request->end_time
+        ) {
             return back()->withErrors([
                 'break_end' => '休憩時間もしくは退勤時間が不適切な値です'
             ]);
+        }
+
+        // 休憩チェック（配列対応）
+        foreach ($request->breaks ?? [] as $break) {
+
+            $start = $break['start'] ?? null;
+            $end   = $break['end'] ?? null;
+
+            // どちらか空ならスキップ
+            if (!$start || !$end) {
+                continue;
+            }
+
+            // 休憩開始 >= 休憩終了チェック
+            if ($start >= $end) {
+                return back()->withErrors([
+                    'break_start' => '休憩時間が不適切な値です'
+                ]);
+            }
+
+            // 出勤・退勤の範囲外チェック
+            if ($request->start_time && $start < $request->start_time) {
+                return back()->withErrors([
+                    'break' => '休憩時間が不適切な値です'
+                ]);
+            }
+
+            if ($request->end_time && $end > $request->end_time) {
+                return back()->withErrors([
+                    'break_end' => '休憩時間もしくは退勤時間が不適切な値です'
+                ]);
+            }
         }
 
         // 備考チェック
@@ -244,8 +289,8 @@ class AttendanceController extends Controller
             ]);
         }
 
-        // 更新
-        Attendance::findOrFail($id)->update([
+        // 勤怠更新
+        $attendance->update([
             'start_time' => $request->start_time,
             'end_time'   => $request->end_time,
             'note'       => $request->note,

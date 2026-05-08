@@ -38,15 +38,14 @@ body {
     color: #555;
 }
 
-/* 値 */
 .value {
     flex: 1;
     font-weight: 600;
 
     display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 /* input */
@@ -77,6 +76,12 @@ body {
     border-radius: 5px;
 }
 
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
 /* 管理者用の調整 */
 .admin-detail .value {
     padding: 8px 0;
@@ -91,6 +96,11 @@ body {
 /* ボタン位置を中央寄せにしたい場合 */
 .admin-detail ~ .detail-actions {
     text-align: center;
+}
+
+.time-group {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
