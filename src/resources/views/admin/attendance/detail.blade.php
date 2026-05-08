@@ -72,18 +72,19 @@
                     〜
                     <input type="time" name="breaks[{{ $index }}][end]"
                         value="{{ optional($break->end_time)->format('H:i') }}">
+
+                    @error('break_start')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
+
+                    @error('break_end')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
             @endforeach
 
-            @error('break_start')
-            <p class="error-message">{{ $message }}</p>
-            @enderror
-
-            @error('break_end')
-            <p class="error-message">{{ $message }}</p>
-            @enderror
 
             {{-- 休憩追加 --}}
             <div class="row">
