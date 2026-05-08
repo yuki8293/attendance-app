@@ -94,6 +94,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     // 管理者勤怠詳細
     Route::get('/attendance/{id}', [AttendanceController::class, 'adminDetail'])->name('admin.attendance.detail');
 
-    Route::put('/admin/attendance/{id}', [AttendanceController::class, 'adminUpdate'])
+    Route::put('/attendance/{id}', [AttendanceController::class, 'adminUpdate'])
         ->name('admin.attendance.update');
 });

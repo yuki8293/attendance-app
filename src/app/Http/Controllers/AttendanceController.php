@@ -296,6 +296,19 @@ class AttendanceController extends Controller
             'note'       => $request->note,
         ]);
 
+        // 休憩更新
+        foreach ($request->breaks ?? [] as $index => $break) {
+
+            $breakTime = $attendance->breaks[$index] ?? null;
+
+            if ($breakTime) {
+                $breakTime->update([
+                    'start_time' => $break['start'] ?? null,
+                    'end_time'   => $break['end'] ?? null,
+                ]);
+            }
+        }
+        
         return redirect()->route('admin.attendance.detail', $id);
     }
 
