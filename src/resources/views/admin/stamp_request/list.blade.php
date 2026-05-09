@@ -2,25 +2,28 @@
 
 @extends('layouts.admin')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/request.css') }}">
+@endsection
+
 @section('content')
 
-<div class="container">
+<div class="request-container">
 
-    <h1>申請一覧</h1>
+    <h1 class="request-title">申請一覧</h1>
 
     {{-- タブ --}}
-    <div class="tabs">
-        <button onclick="showTab('pending')">承認待ち</button>
-        <button onclick="showTab('approved')">承認済み</button>
+    <div class="request-tabs">
+        <button class="tab-button" onclick="showTab('pending')">承認待ち</button>
+        <button class="tab-button" onclick="showTab('approved')">承認済み</button>
     </div>
 
-    {{-- ========================= --}}
     {{-- 承認待ち --}}
-    {{-- ========================= --}}
-    <div id="pending">
-        <h2>承認待ち</h2>
+    <div id="pending" class="request-content">
 
-        <table border="1">
+        <h2 class="tab-title">承認待ち</h2>
+
+        <table class="request-table">
             <tr>
                 <th>状態</th>
                 <th>名前</th>
@@ -38,8 +41,13 @@
                     {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
-                <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y/m/d') }}</td>
-                <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
+                <td>{{ $request->created_at->format('Y/m/d') }}</td>
+                <td>
+                    <a class="detail-link"
+                        href="{{ route('admin.stamp_request.approve', $request->id) }}">
+                        詳細
+                    </a>
+                </td>
             </tr>
             @empty
             <tr>
@@ -49,13 +57,12 @@
         </table>
     </div>
 
-    {{-- ========================= --}}
     {{-- 承認済み --}}
-    {{-- ========================= --}}
-    <div id="approved" style="display:none;">
-        <h2>承認済み</h2>
+    <div id="approved" class="request-content" style="display:none;">
 
-        <table border="1">
+        <h2 class="tab-title">承認済み</h2>
+
+        <table class="request-table">
             <tr>
                 <th>状態</th>
                 <th>名前</th>
@@ -73,8 +80,13 @@
                     {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
-                <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y/m/d') }}</td>
-                <td><a href="{{ route('admin.stamp_request.approve', $request->id) }}">詳細</a></td>
+                <td>{{ $request->created_at->format('Y/m/d') }}</td>
+                <td>
+                    <a class="detail-link"
+                        href="{{ route('admin.stamp_request.approve', $request->id) }}">
+                        詳細
+                    </a>
+                </td>
             </tr>
             @empty
             <tr>
@@ -86,12 +98,11 @@
 
 </div>
 
-{{-- これが切り替えの正体 --}}
+{{-- 切り替え --}}
 <script>
     function showTab(tab) {
         document.getElementById('pending').style.display = 'none';
         document.getElementById('approved').style.display = 'none';
-
         document.getElementById(tab).style.display = 'block';
     }
 </script>
