@@ -1,4 +1,5 @@
 /* 勤怠一覧画面(管理者) */
+/* スタッフ一覧画面(管理者) */
 
 /* 全体 */
 .admin-attendance-list {
@@ -95,5 +96,55 @@ PCレスポンシブ対応（1400〜1540px）
     .admin-attendance-list__detail-link {
         padding: 8px 14px;
     }
+}
+
+/* ここからスタッフ一覧画面 */
+
+.admin-staff-list {
+    width: 100%;
+}
+
+.admin-staff-list .page-title {
+    width: 80%;
+    margin: 40px auto 20px;
+    padding-left: 15px;
+    border-left: 6px solid #000;
+    font-size: 28px;
+}
+
+.admin-staff-list .table-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.admin-staff-list .staff-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-staff-list .staff-table th {
+    text-align: center;
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
+    color: #555;
+}
+
+.admin-staff-list .staff-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.admin-staff-list .detail-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.admin-staff-list .detail-link:hover {
+    text-decoration: underline;
 }
 

@@ -9,27 +9,38 @@
 @section('content')
 <div class="admin-staff-list">
 
-    <h1>スタッフ一覧</h1>
+    <h1 class="page-title">スタッフ一覧</h1>
 
-    <table>
-        <tr>
-            <th>名前</th>
-            <th>メール</th>
-            <th>月次勤怠</th>
-        </tr>
+    <div class="table-wrapper">
 
-        @foreach ($users as $user)
-        <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>
-                <a href="{{ route('admin.staff.attendance', $user->id) }}">
-                    詳細
-                </a>
-            </td>
-        </tr>
-        @endforeach
-    </table>
+        <table class="staff-table">
+
+            <tr>
+                <th>名前</th>
+                <th>メールアドレス</th>
+                <th>月次勤怠</th>
+            </tr>
+
+            @foreach ($users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+
+                <td>{{ $user->email }}</td>
+
+                <td>
+                    <a
+                        class="detail-link"
+                        href="{{ route('admin.staff.attendance', $user->id) }}">
+                        詳細
+                    </a>
+                </td>
+            </tr>
+            @endforeach
+
+        </table>
+
+    </div>
 
 </div>
+
 @endsection
