@@ -1,0 +1,62 @@
+/* 承認待ちの勤怠詳細画面(一般ユーザー) */
+
+body {
+    background-color: #f3f4f6;
+}
+
+.detail-title {
+    width: 80%;
+    margin: 40px auto 20px;
+    padding-left: 15px;
+    border-left: 6px solid #000;
+    font-size: 28px;
+}
+
+.detail-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.label {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+    font-size: 18px;
+}
+
+.content {
+    width: 70%;
+    font-size: 18px;
+}
+
+.time-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.time-group input {
+    width: 120px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+.notice-message {
+    width: 80%;
+    margin: 20px auto 0;
+    text-align: right;
+    color: red;
+    font-weight: bold;
+}
