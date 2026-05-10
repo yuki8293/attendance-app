@@ -22,10 +22,11 @@
         <a
             class="month-link"
             href="{{ route('admin.staff.attendance', [
-                'id' => $user->id,
-                'year' => \Carbon\Carbon::create($year, $month)->subMonth()->year,
-                'month' => \Carbon\Carbon::create($year, $month)->subMonth()->month
-            ]) }}">
+        'id' => $user->id,
+        'month' => \Carbon\Carbon::create($year, $month)
+                    ->subMonth()
+                    ->format('Y-m')
+    ]) }}">
             ← 前月
         </a>
 
@@ -38,10 +39,11 @@
         <a
             class="month-link"
             href="{{ route('admin.staff.attendance', [
-                'id' => $user->id,
-                'year' => \Carbon\Carbon::create($year, $month)->addMonth()->year,
-                'month' => \Carbon\Carbon::create($year, $month)->addMonth()->month
-            ]) }}">
+        'id' => $user->id,
+        'month' => \Carbon\Carbon::create($year, $month)
+                    ->addMonth()
+                    ->format('Y-m')
+    ]) }}">
             翌月 →
         </a>
 
@@ -64,6 +66,27 @@
             </tr>
 
             @foreach ($attendances as $attendance)
+
+            @php
+
+            $breakMinutes = 0;
+
+            foreach ($attendance->breaks as $break) {
+
+            if ($break->start_time && $break->end_time) {
+
+            $start = \Carbon\Carbon::parse($break->start_time);
+            $end = \Carbon\Carbon::parse($break->end_time);
+
+            $breakMinutes += $start->diffInMinutes($end);
+            }
+            }
+
+            $breakHours = floor($breakMinutes / 60);
+            $breakRemainMinutes = $breakMinutes % 60;
+
+            @endphp
+
             <tr>
 
                 {{-- 日付 --}}
@@ -83,12 +106,34 @@
 
                 {{-- 休憩 --}}
                 <td class="break-time">
-                    --
+
+                    {{ sprintf('%02d:%02d', $breakHours, $breakRemainMinutes) }}
+
                 </td>
+
 
                 {{-- 合計 --}}
                 <td class="total-time">
-                    --
+                    @if ($attendance->start_time && $attendance->end_time)
+
+                    @php
+
+                    $workMinutes =
+                    \Carbon\Carbon::parse($attendance->start_time)
+                    ->diffInMinutes(
+                    \Carbon\Carbon::parse($attendance->end_time)
+                    );
+
+                    $totalMinutes = $workMinutes - $breakMinutes;
+
+                    $totalHours = floor($totalMinutes / 60);
+                    $totalRemainMinutes = $totalMinutes % 60;
+
+                    @endphp
+
+                    {{ sprintf('%02d:%02d', $totalHours, $totalRemainMinutes) }}
+
+                    @endif
                 </td>
 
                 {{-- 詳細 --}}
