@@ -33,20 +33,47 @@
         <div class="row">
             <div class="label">出勤・退勤</div>
             <div class="value">
-                {{ $attendance_correct_request->start_time }} 〜
-                {{ $attendance_correct_request->end_time }}
+                {{ \Carbon\Carbon::parse($attendance_correct_request->start_time)->format('H:i') }}
+                〜
+                {{ \Carbon\Carbon::parse($attendance_correct_request->end_time)->format('H:i') }}
             </div>
         </div>
 
         {{-- 休憩 --}}
-        @foreach($attendance_correct_request->attendance->breaks as $break)
         <div class="row">
-            <div class="label">休憩{{ $loop->iteration }}</div>
+            <div class="label">休憩</div>
+
             <div class="value">
-                {{ $break->start_time }} 〜 {{ $break->end_time }}
+
+                @if($attendance_correct_request->break_start && $attendance_correct_request->break_end)
+
+                {{ \Carbon\Carbon::parse($attendance_correct_request->break_start)->format('H:i') }}
+                〜
+                {{ \Carbon\Carbon::parse($attendance_correct_request->break_end)->format('H:i') }}
+
+                @elseif(isset($breaks[0]))
+
+                {{ \Carbon\Carbon::parse($breaks[0]->start_time)->format('H:i') }}
+                〜
+                {{ \Carbon\Carbon::parse($breaks[0]->end_time)->format('H:i') }}
+
+                @else
+                -
+                @endif
+
             </div>
         </div>
-        @endforeach
+
+        {{-- 休憩2 --}}
+        <div class="row">
+            <div class="label">休憩2</div>
+            <div class="value">
+                {{ isset($breaks[1])
+            ? \Carbon\Carbon::parse($breaks[1]->start_time)->format('H:i') . ' 〜 ' . \Carbon\Carbon::parse($breaks[1]->end_time)->format('H:i')
+            : '-' }}
+            </div>
+        </div>
+
 
         {{-- 備考 --}}
         <div class="row">
