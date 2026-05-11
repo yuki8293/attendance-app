@@ -25,7 +25,7 @@
         <div class="row">
             <div class="label">日付</div>
             <div class="value">
-                {{ \Carbon\Carbon::parse($attendance_correct_request->attendance->work_date)->format('Y/m/d') }}
+                {{ \Carbon\Carbon::parse($attendance_correct_request->attendance->work_date)->format('Y年m月d日') }}
             </div>
         </div>
 
