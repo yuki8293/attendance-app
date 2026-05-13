@@ -107,10 +107,34 @@ class StampCorrectionRequestController extends Controller
     // 管理者：承認処理
     public function updateStatus($id)
     {
-        $request = \App\Models\AttendanceRequest::findOrFail($id);
+        // 修正申請データ取得
+        $requestData = AttendanceRequest::with('attendance.breaks')
+            ->findOrFail($id);
 
-        $request->status = '承認済み';
-        $request->save();
+        // 元の勤怠データ取得
+        $attendance = $requestData->attendance;
+
+        // 勤怠更新
+        $attendance->update([
+            'start_time' => $requestData->start_time,
+            'end_time'   => $requestData->end_time,
+            'note'       => $requestData->note,
+        ]);
+
+        // 休憩更新
+        $break = $attendance->breaks()->first();
+
+        if ($break && $requestData->break_start && $requestData->break_end) {
+
+            $break->update([
+                'start_time' => $requestData->break_start,
+                'end_time'   => $requestData->break_end,
+            ]);
+        }
+
+        // 承認済みに変更
+        $requestData->status = '承認済み';
+        $requestData->save();
 
         return response()->json([
             'status' => 'ok'

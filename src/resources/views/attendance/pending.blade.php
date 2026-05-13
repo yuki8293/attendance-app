@@ -52,8 +52,11 @@
     </div>
 
     @php
-    $breakStart = $requestData->break_start ?? null;
-    $breakEnd = $requestData->break_end ?? null;
+    $breakStart = $requestData->break_start
+    ?? optional($attendance->breaks->first())->start_time;
+
+    $breakEnd = $requestData->break_end
+    ?? optional($attendance->breaks->first())->end_time;
     @endphp
 
     <div class="detail-row">
@@ -62,6 +65,7 @@
         <div class="time-group">
 
             <span class="time">
+
                 {{ $breakStart ? \Carbon\Carbon::parse($breakStart)->format('H:i') : '' }}
             </span>
 

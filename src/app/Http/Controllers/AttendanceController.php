@@ -153,19 +153,6 @@ class AttendanceController extends Controller
         // 勤怠データ取得（休憩も一緒に）
         $attendance = Attendance::with('breaks')->findOrFail($id);
 
-        // 出勤・退勤・備考を更新
-        $attendance->update([
-
-            'start_time' => $request->clock_in
-                ? Carbon::parse($attendance->work_date)->format('Y-m-d') . ' ' . $request->clock_in
-                : null,
-
-            'end_time' => $request->clock_out
-                ? Carbon::parse($attendance->work_date)->format('Y-m-d') . ' ' . $request->clock_out
-                : null,
-
-            'note'       => $request->note,
-        ]);
 
         // 休憩データが送信されている場合
         if ($request->has('breaks')) {
@@ -175,28 +162,7 @@ class AttendanceController extends Controller
 
                 $break = $attendance->breaks[$index] ?? null;
 
-                if ($break) {
-                    $break->update([
-                        'start_time' => $breakData['start'],
-                        'end_time'   => $breakData['end'],
-                    ]);
-                }
             }
-        }
-
-        // 新しく追加された休憩が入力されている場合のみ登録
-        if ($request->break_new_start && $request->break_new_end) {
-            BreakTime::create([
-
-                // どの勤怠に紐づく休憩か
-                'attendance_id' => $attendance->id,
-
-                // 新しい休憩の開始時間
-                'start_time'    => $request->break_new_start,
-
-                // 新しい休憩の終了時間
-                'end_time'      => $request->break_new_end,
-            ]);
         }
 
         //修正申請を作成
@@ -207,6 +173,11 @@ class AttendanceController extends Controller
             'end_time' => $request->clock_out,
             'note' => $request->note,
             'status' => '承認待ち',
+
+            // 休憩時間も保存
+            'break_start' => $request->input('breaks.0.start'),
+            'break_end'   => $request->input('breaks.0.end'),
+            
         ]);
 
         // 更新後、詳細画面にリダイレクト

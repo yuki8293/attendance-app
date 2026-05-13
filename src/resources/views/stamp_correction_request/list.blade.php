@@ -39,7 +39,7 @@
                 <td>{{ $request->status }}</td>
                 <td>{{ $request->user->name ?? '' }}</td>
                 <td>
-                    {{ \Carbon\Carbon::parse($request->attendance->date)->format('Y/m/d') }}
+                    {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
                 <td>{{ $request->created_at->format('Y/m/d') }}</td>
@@ -74,11 +74,10 @@
                 <td>{{ $request->status }}</td>
                 <td>{{ $request->user->name ?? '' }}</td>
                 <td>
-                    {{ $request->attendance->date ?? '' }}
-                    {{ $request->start_time }}〜{{ $request->end_time }}
+                    {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y/m/d') }}
                 </td>
                 <td>{{ $request->note }}</td>
-                <td>{{ $request->created_at }}</td>
+                <td>{{ $request->created_at->format('Y/m/d') }}</td>
                 <td><a class="detail-link" href="{{ route('attendance.pending', ['id' => $request->attendance->id]) }}">詳細</a></td>
             </tr>
             @empty
